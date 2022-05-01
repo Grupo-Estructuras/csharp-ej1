@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "EPdiQJyuhSpJ23eCudk6u8qn6i80jubbzGit5YR14fUXskgnhh+wpA1NlL8BGdSvmiFoVhVXnFUT/uDsdpYjlg==",
+  "success": true,
+  "projectFilePath": "D:\\documents\\Facu\\Facu-2022\\EL\\Proyecto\\csharp-ej1\\csharp-ej1.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\guiga\\.nuget\\packages\\htmlagilitypack\\1.11.42\\htmlagilitypack.1.11.42.nupkg.sha512"
+  ],
+  "logs": []
+}
