@@ -394,3 +394,6 @@ FodyWeavers.xsd
 
 # Ignore Vscode launch
 .vscode
+
+# Ignore Resultados.txt
+data/Resultados.txt
