@@ -7,17 +7,20 @@ namespace csharp_ej1
             List<string> languages = new List<string>();
             HtmlAgilityPack.HtmlWeb web = new HtmlAgilityPack.HtmlWeb();
             HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
+            IEnumerable<HtmlAgilityPack.HtmlNode> nodes;
 
             try
             {
                 doc = web.Load("https://www.tiobe.com/tiobe-index/");
+                nodes = doc.DocumentNode.Descendants().Where(item => item.HasClass("td-top20"));
             }
             catch (System.Net.WebException err)
             {
                 Console.WriteLine(err.Message);
+                
+                return new List<string>();
             }
             
-            IEnumerable<HtmlAgilityPack.HtmlNode> nodes = doc.DocumentNode.Descendants().Where(item => item.HasClass("td-top20"));
 
             foreach (var node in nodes)
             {
