@@ -13,11 +13,6 @@ namespace csharp_ej1
             this.rating = rating;
         }
 
-        public void setRating(double rating)
-        {
-            this.rating = rating;
-        }
-
         public string getName()
         {
             return this.name;
