@@ -4,9 +4,11 @@ namespace csharp_ej1
 {
     class Githubscraper
     {
-        public static void scrapeGithub(List<string> languages)
+        public static List<Language> scrapeGithub(List<string> languages)
         {       
             // DONE Reading from languages string and getting alias from json
+            int min = 0;
+            int max = 0;
             List<Language> langObjArr = new List<Language>();
             using (StreamReader file = File.OpenText("data/langAliases.json"))
             using (Newtonsoft.Json.JsonTextReader reader = new Newtonsoft.Json.JsonTextReader(file))
@@ -26,22 +28,38 @@ namespace csharp_ej1
                         alias = language;
                     }
 
-                    // DOING Webscraping github with "alias"
+                    // DONE Webscraping github with "alias"
                     var repoAmmount = getRepoAmmount(alias.ToString());
-                    
+
+                    min = (min < repoAmmount && min != 0) ? min : repoAmmount;
+                    max = (max > repoAmmount) ? max : repoAmmount;
+
                     Language langObj = new Language(language, repoAmmount, 0.0);
                     langObjArr.Add(langObj);
 
                     Console.WriteLine($"Scraping...{language}");
                 }
             }
-            // Console.WriteLine("langObjArr.First().getName()");
-            generateFile(langObjArr); 
+            generateFile(langObjArr);
+
+            return updateRatingSorted(langObjArr, min, max);
         }
 
-     
+        private static List<Language> updateRatingSorted(List<Language> langObjArr, int min, int max)
+        {
+            List<Language> tempLangArr = new List<Language>();
+
+            foreach (var item in langObjArr)
+            {
+                var newRating = Math.Round((double)(item.getRepoAmmount() - min) / (max - min) * 100, 3);
+                tempLangArr.Add(new Language(item.getName(), item.getRepoAmmount(), newRating));
+            }
+
+            return tempLangArr;
+        }
+
         // DONE Gets repo ammount from github
-        public static int getRepoAmmount(string langAlias)
+        private static int getRepoAmmount(string langAlias)
         {
             HtmlAgilityPack.HtmlWeb web = new HtmlAgilityPack.HtmlWeb();
             HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
@@ -62,7 +80,7 @@ namespace csharp_ej1
             var foundData = nodes.Last().InnerText;
             var repoAmmount = Regex.Match(foundData, @"\d+(,\d*)*").Value;
             repoAmmount = repoAmmount.Replace(",", "");
-            // Console.WriteLine(repoAmmount);
+
             return Int32.Parse(repoAmmount);
         }
 

@@ -111,11 +111,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "d:\\documents\\Facu\\Facu-2022\\EL\\Proyecto\\csharp-ej1\\csharp-ej1.csproj",
+      "projectUniqueName": "D:\\documents\\Facu\\Facu-2022\\EL\\Proyecto\\csharp-ej1\\csharp-ej1.csproj",
       "projectName": "csharp-ej1",
-      "projectPath": "d:\\documents\\Facu\\Facu-2022\\EL\\Proyecto\\csharp-ej1\\csharp-ej1.csproj",
+      "projectPath": "D:\\documents\\Facu\\Facu-2022\\EL\\Proyecto\\csharp-ej1\\csharp-ej1.csproj",
       "packagesPath": "C:\\Users\\guiga\\.nuget\\packages\\",
-      "outputPath": "d:\\documents\\Facu\\Facu-2022\\EL\\Proyecto\\csharp-ej1\\obj\\",
+      "outputPath": "D:\\documents\\Facu\\Facu-2022\\EL\\Proyecto\\csharp-ej1\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\guiga\\AppData\\Roaming\\NuGet\\NuGet.Config",
