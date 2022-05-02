@@ -5,13 +5,17 @@
         static void Main(string[] args)
         {
             List<string> languages = Tiobescraper.scrapeTiobe();
-            
-            foreach (var language in languages)
+            var orderedLanguages = Githubscraper.scrapeGithub(languages);
+            var position = 0;
+
+            foreach (var language in orderedLanguages)
             {
-                Console.WriteLine(language);
+                Console.WriteLine($"{++position}- {language.getName()},{language.getRating()},{language.getRepoAmmount()}");
+
+                if (position == 10) break;
             }
 
-            Githubscraper.scrapeGithub(languages);
+            BarChart.generateGraph();
         }
     }
 }
