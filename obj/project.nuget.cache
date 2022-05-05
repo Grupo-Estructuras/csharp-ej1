@@ -1,11 +1,15 @@
 {
   "version": 2,
-  "dgSpecHash": "UDQgKfCfJa44uUUiFYhqG4NiTqG3G8NLE+T6X/5SN91BpYKTqvFaL9jYRKlHA0OjwzPNif7XZa4FSAO5IOzQWg==",
+  "dgSpecHash": "Lb4qG9xc83GJstk0rJDIDoUsupYhNZlabPSo6bghtJqfS9dbdS+Ph71pk2tc3tkfLIVZ/nT3IinIiZQ7zqFuug==",
   "success": true,
   "projectFilePath": "D:\\documents\\Facu\\Facu-2022\\EL\\Proyecto\\csharp-ej1\\csharp-ej1.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\guiga\\.nuget\\packages\\htmlagilitypack\\1.11.42\\htmlagilitypack.1.11.42.nupkg.sha512",
-    "C:\\Users\\guiga\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512"
+    "C:\\Users\\guiga\\.nuget\\packages\\microsoft.netcore.platforms\\3.0.0\\microsoft.netcore.platforms.3.0.0.nupkg.sha512",
+    "C:\\Users\\guiga\\.nuget\\packages\\microsoft.win32.systemevents\\4.6.0\\microsoft.win32.systemevents.4.6.0.nupkg.sha512",
+    "C:\\Users\\guiga\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512",
+    "C:\\Users\\guiga\\.nuget\\packages\\scottplot\\4.1.43\\scottplot.4.1.43.nupkg.sha512",
+    "C:\\Users\\guiga\\.nuget\\packages\\system.drawing.common\\4.6.1\\system.drawing.common.4.6.1.nupkg.sha512"
   ],
   "logs": []
 }

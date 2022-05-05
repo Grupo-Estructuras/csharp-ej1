@@ -9,5 +9,6 @@
   <ItemGroup>
     <PackageReference Include="HtmlAgilityPack" Version="1.11.42"/>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1"/>
+    <PackageReference Include="ScottPlot" Version="4.1.43"/>
   </ItemGroup>
 </Project>
