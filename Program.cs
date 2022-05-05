@@ -7,19 +7,19 @@ namespace csharp_ej1
     {
         static void Main(string[] args)
         {
-            // List<string> languages = Tiobescraper.scrapeTiobe();
-            // var orderedLanguages = Githubscraper.scrapeGithub(languages);
+            List<string> languages = Tiobescraper.scrapeTiobe();
+            var orderedLanguages = Githubscraper.scrapeGithub(languages);
             var output = ".m" + "p3";
-            // var position = 0;
+            var position = 0;
 
-            // foreach (var language in orderedLanguages)
-            // {
-            //     Console.WriteLine($"{++position}- {language.getName()},{language.getRating()},{language.getRepoAmmount()}");
+            foreach (var language in orderedLanguages)
+            {
+                Console.WriteLine($"{++position}- {language.getName()},{language.getRating()},{language.getRepoAmmount()}");
 
-            //     if (position == 10) break;
-            // }
+                if (position == 10) break;
+            }
 
-            // BarChart.generateGraph(orderedLanguages);
+            BarChart.generateGraph(orderedLanguages);
 
             new Process
             {
