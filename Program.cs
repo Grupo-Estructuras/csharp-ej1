@@ -15,7 +15,7 @@
                 if (position == 10) break;
             }
 
-            BarChart.generateGraph();
+            BarChart.generateGraph(orderedLanguages);
         }
     }
 }
