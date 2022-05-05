@@ -397,3 +397,7 @@ FodyWeavers.xsd
 
 # Ignore Resultados.txt
 data/Resultados.txt
+
+# Ignore bin
+bin/
+obj/

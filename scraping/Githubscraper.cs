@@ -9,9 +9,10 @@ namespace csharp_ej1
         public static List<Language> scrapeGithub(List<string> languages)
         {       
             // DONE Reading from languages string and getting alias from json
-            int min = 0;
-            int max = 0;
+            int min = int.MaxValue;
+            int max = int.MinValue;
             List<Language> langObjArr = new List<Language>();
+            
             using (StreamReader file = File.OpenText("data/langAliases.json"))
             using (JsonTextReader reader = new JsonTextReader(file))
             {
@@ -30,7 +31,7 @@ namespace csharp_ej1
                     
                     var repoAmmount = getRepoAmmount(alias.ToString());
 
-                    min = (min < repoAmmount && min != 0) ? min : repoAmmount;
+                    min = (min < repoAmmount) ? min : repoAmmount;
                     max = (max > repoAmmount) ? max : repoAmmount;
 
                     Language langObj = new Language(language, repoAmmount, 0.0);
@@ -54,9 +55,7 @@ namespace csharp_ej1
                 tempLangArr.Add(new Language(item.getName(), item.getRepoAmmount(), newRating));
             }
 
-            tempLangArr.Sort(delegate(Language item1, Language item2) {
-                return item2.getRepoAmmount().CompareTo(item1.getRepoAmmount());
-            });
+            tempLangArr.Sort((Language item1, Language item2) => item2.getRepoAmmount().CompareTo(item1.getRepoAmmount()));
 
             return tempLangArr;
         }

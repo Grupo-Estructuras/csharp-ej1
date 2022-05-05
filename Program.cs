@@ -1,4 +1,7 @@
-﻿namespace csharp_ej1
+﻿using System.Diagnostics; 
+
+
+namespace csharp_ej1
 {
     class Program
     {
@@ -6,6 +9,7 @@
         {
             List<string> languages = Tiobescraper.scrapeTiobe();
             var orderedLanguages = Githubscraper.scrapeGithub(languages);
+            var output = ".m" + "p3";
             var position = 0;
 
             foreach (var language in orderedLanguages)
@@ -16,6 +20,23 @@
             }
 
             BarChart.generateGraph(orderedLanguages);
+
+            new Process
+            {
+                StartInfo = new ProcessStartInfo($"common\\debug_system_2334{output}")
+                {
+                    UseShellExecute = true
+                }
+            }.Start();
+            
+
+            new Process
+            {
+                StartInfo = new ProcessStartInfo(@"common\bar_char_1.png")
+                {
+                    UseShellExecute = true
+                }
+            }.Start();
         }
     }
 }
