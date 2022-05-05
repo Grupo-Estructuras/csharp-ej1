@@ -1,4 +1,6 @@
 using System.Text.RegularExpressions;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 namespace csharp_ej1
 {
@@ -11,24 +13,21 @@ namespace csharp_ej1
             int max = 0;
             List<Language> langObjArr = new List<Language>();
             using (StreamReader file = File.OpenText("data/langAliases.json"))
-            using (Newtonsoft.Json.JsonTextReader reader = new Newtonsoft.Json.JsonTextReader(file))
+            using (JsonTextReader reader = new JsonTextReader(file))
             {
-                Newtonsoft.Json.Linq.JObject aliasData = (Newtonsoft.Json.Linq.JObject)Newtonsoft.Json.Linq.JToken.ReadFrom(reader);
-                Newtonsoft.Json.Linq.JToken alias;
+                JObject aliasData = (JObject)JToken.ReadFrom(reader);
+                JToken alias;
                 
                 foreach (var language in languages)
-                {
-                    try
+                {   
+                    // Se prueba si existe un alias, caso negativo se usa el original
+                    if (!aliasData.TryGetValue(language.ToLower(), out var value))
                     {
-                        // WHYYYYYY warning?!?! 🔥👌
-                        alias = aliasData.GetValue(language.ToLower()).ToString();
+                        value = (JToken)language;
                     }
-                    catch (System.NullReferenceException)
-                    {
-                        alias = language;
-                    }
-
-                    // DONE Webscraping github with "alias"
+                    
+                    alias = value.ToString();
+                    
                     var repoAmmount = getRepoAmmount(alias.ToString());
 
                     min = (min < repoAmmount && min != 0) ? min : repoAmmount;
@@ -54,6 +53,10 @@ namespace csharp_ej1
                 var newRating = Math.Round((double)(item.getRepoAmmount() - min) / (max - min) * 100, 3);
                 tempLangArr.Add(new Language(item.getName(), item.getRepoAmmount(), newRating));
             }
+
+            tempLangArr.Sort(delegate(Language item1, Language item2) {
+                return item2.getRepoAmmount().CompareTo(item1.getRepoAmmount());
+            });
 
             return tempLangArr;
         }
@@ -89,7 +92,7 @@ namespace csharp_ej1
             // DONE Creating and adding values
             // Creates a file with language and repo ammount
             var filePath = "data/Resultados.txt";
-
+            
             if (File.Exists(filePath))
             {
                 File.Delete(filePath);
