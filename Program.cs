@@ -7,36 +7,35 @@ namespace csharp_ej1
     {
         static void Main(string[] args)
         {
+            // Genera los lenguajes Top 20 de TIOBE
             var languages = Tiobescraper.scrapeTiobe();
+            
+            // Parte 1
+            // Scraping de Github para la cantidad de repositorios
             var orderedLanguages = Githubscraper.scrapeGithub(languages);
-            var position = 0;
-
-            foreach (var language in orderedLanguages)
-            {
-                Console.WriteLine($"{++position}- {language.getName()},{language.getRating()},{language.getRepoAmmount()}");
-
-                if (position == 10) break;
-            }
-
+            Utilities.generateFile(orderedLanguages, "Resultados.txt");
             BarChart.generateGraph(orderedLanguages, 10, "bar_graph.png");
 
+            // Abre grafico parte 1
             new Process
             {
-                StartInfo = new ProcessStartInfo($"common{System.IO.Path.DirectorySeparatorChar}bar_graph.png")
+                StartInfo = new ProcessStartInfo("bar_graph.png")
                 {
                     UseShellExecute = true
                 }
             }.Start();
 
             // Parte 2
+            // Scraping de Github para la cantidad de topics relacionados
             var dic = Githubscraper2.getTopics("chad");
-            var sortedDic = Githubscraper2.sortDictionary(dic);
-            Githubscraper.generateFile(sortedDic, "Resultados2.txt");
+            var sortedDic = Utilities.sortDictionary(dic);
+            Utilities.generateFile(sortedDic, "Resultados2.txt");
             BarChart.generateGraph(sortedDic, 20, "bar_graph2.png");
 
+            // Abre grafico parte 2
             new Process
             {
-                StartInfo = new ProcessStartInfo($"common{System.IO.Path.DirectorySeparatorChar}bar_graph2.png")
+                StartInfo = new ProcessStartInfo("bar_graph2.png")
                 {
                     UseShellExecute = true
                 }
