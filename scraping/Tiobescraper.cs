@@ -4,34 +4,28 @@ namespace csharp_ej1
     {
         public static List<string> scrapeTiobe()
         {
+            // Se busca el elemento dentro de la pagina de Tiobe 
             List<string> languages = new List<string>();
-            HtmlAgilityPack.HtmlWeb web = new HtmlAgilityPack.HtmlWeb();
-            HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
-            IEnumerable<HtmlAgilityPack.HtmlNode> nodes;
+            var generatedNode = Utilities.getElementsByClass();
 
-            try
-            {
-                doc = web.Load("https://www.tiobe.com/tiobe-index/");
-                nodes = doc.DocumentNode.Descendants().Where(item => item.HasClass("td-top20"));
-            }
-            catch (System.Net.WebException err)
-            {
-                Console.WriteLine(err.Message);
-                
-                return new List<string>();
-            }
+            // En caso de un error devuelve un entero, caso positivo devuelve una coleccion de nodos
+            if (generatedNode is int) return new List<string>();
+
+            IEnumerable<HtmlAgilityPack.HtmlNode> nodes = (IEnumerable<HtmlAgilityPack.HtmlNode>)generatedNode;
             
-
+            // De la lista de nodos, el nodo siguiente a cada nodo principal contiene el nombre del lenguaje
             foreach (var node in nodes)
             {
                 languages.Add(node.NextSibling.InnerText);
             }
 
+            // En caso de no encontrar la cantidad de lenguajes envia un mensaje
             if (languages.Count < 20)
             {
                 Console.WriteLine("Aviso: No se encontraron 20 entradas en tiobe. Tratando seguir igual...");
             }
 
+            // Retorna la lista con el nombre de los lenguajes Top 20
             return languages;
         }
     }

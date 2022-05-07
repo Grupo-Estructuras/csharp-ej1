@@ -6,15 +6,16 @@ namespace csharp_ej1
 {
     class Githubscraper
     {
+        // Busca la cantidad de repositorios que posee cada lenguage de la lista
         public static List<Language> scrapeGithub(List<string> languages)
         {       
-            // DONE Reading from languages string and getting alias from json
+            List<Language> langObjArr = new List<Language>();
             int min = int.MaxValue;
             int max = int.MinValue;
-            List<Language> langObjArr = new List<Language>();
             
             try 
             {
+                // Se abre un archivo con los alias y se convierte en un objeto
                 using (StreamReader file = File.OpenText("data/langAliases.json"))
                 using (JsonTextReader reader = new JsonTextReader(file))
                 {
@@ -31,11 +32,14 @@ namespace csharp_ej1
                         
                         alias = value.ToString();
                         
+                        // Busca la cantidad de repositorios del lenguaje con el alias
                         var repoAmmount = getRepoAmmount(alias.ToString());
 
+                        // Se buscan los valores minimos y maximos de repositorios
                         min = (min < repoAmmount) ? min : repoAmmount;
                         max = (max > repoAmmount) ? max : repoAmmount;
 
+                        // Se crea una estructura de lenguaje y se agrega el lenguaje a un array
                         Language langObj = new Language(language, repoAmmount, 0.0);
                         langObjArr.Add(langObj);
 
@@ -59,98 +63,45 @@ namespace csharp_ej1
                 Environment.Exit(0);
             }
 
-            generateFile(langObjArr, "Resultados.txt");
-
             return updateRatingSorted(langObjArr, min, max);
         }
 
+        // Agrega el rating a cada lenguaje y retorna la lista de lenguajes ordenada por cantidad de repositorios
         private static List<Language> updateRatingSorted(List<Language> langObjArr, int min, int max)
         {
             List<Language> tempLangArr = new List<Language>();
 
+            // Aplica la formula para el rating y agrega el atributo a cada lenguaje
             foreach (var item in langObjArr)
             {
                 var newRating = Math.Round((double)(item.getRepoAmmount() - min) / (max - min) * 100, 3);
                 tempLangArr.Add(new Language(item.getName(), item.getRepoAmmount(), newRating));
             }
 
+            // Ordena la lista de lenguajes segun cantidad de repositorios
             tempLangArr.Sort((Language item1, Language item2) => item2.getRepoAmmount().CompareTo(item1.getRepoAmmount()));
 
             return tempLangArr;
         }
 
-        // Gets repo ammount from github
+        // Retorna la cantidad de repositorios que posee un lenguaje
         private static int getRepoAmmount(string langAlias)
         {
-            HtmlAgilityPack.HtmlWeb web = new HtmlAgilityPack.HtmlWeb();
-            HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
-            IEnumerable<HtmlAgilityPack.HtmlNode> nodes;
+            // Se busca el elemento dentro de la pagina segun la clase especificada
+            var generatedNode = Utilities.getElementsByClass(langAlias);
 
-            try
-            {
-                doc = web.Load($"https://github.com/topics/{langAlias}");
-                nodes = doc.DocumentNode.Descendants().Where(item => item.HasClass("h3"));
-            }
-            catch (System.Net.WebException err)
-            {
-                Console.WriteLine(err.Message);
+            // En caso de un error devuelve un entero, caso positivo devuelve una coleccion de nodos
+            if (generatedNode is int) return 0;
 
-                return 0;
-            }
+            IEnumerable<HtmlAgilityPack.HtmlNode> nodes = (IEnumerable<HtmlAgilityPack.HtmlNode>)generatedNode;
 
+            // Se selecciona el ultimo item y se guarda el html para buscar con regex la cantidad
             var foundData = nodes.Last().InnerText;
             var repoAmmount = Regex.Match(foundData, @"\d+(,\d*)*").Value;
             repoAmmount = repoAmmount.Replace(",", "");
 
+            // Retorna la cantidad convertida en entero
             return Int32.Parse(repoAmmount);
-        }
-
-        // Genera un archivo con el array de los tipos de datos soportados
-        public static void generateFile(Object ObjArr, string fileName) 
-        {
-            // Creates a file with language and repo ammount
-            var filePath = $"data/{fileName}";
-            
-            if (File.Exists(filePath))
-            {
-                File.Delete(filePath);
-            }
-
-            try
-            {
-                using (StreamWriter fileStr = File.CreateText(filePath))
-                {
-                    if (ObjArr is List<Language>)
-                    {
-                        foreach (var item in (List<Language>)ObjArr)
-                        {
-                            fileStr.WriteLine($"{item.getName()},{item.getRepoAmmount()}");
-                        }
-                    }
-                    else if (ObjArr is IOrderedEnumerable<KeyValuePair<string, int>>)
-                    {
-                        foreach (var item in (IOrderedEnumerable<KeyValuePair<string, int>>)ObjArr)
-                        {
-                            fileStr.WriteLine($"{item.Key},{item.Value}");
-                        }
-                    }
-                    else if (ObjArr is Dictionary<string, int>)
-                    {
-                        foreach (var item in (Dictionary<string, int>)ObjArr)
-                        {
-                            fileStr.WriteLine($"{item.Key},{item.Value}");
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine("Tipo de dato no soportado");
-                    }
-                }
-            }
-            catch (IOException)
-            {
-                Console.WriteLine("El archivo no puede abrirse, porfavor intente cerrar el archivo");
-            }
         }
     }
 }

@@ -38,52 +38,16 @@ namespace csharp_ej1
             return topicsDic;
         }
 
-        // Imprime los elementos de un Dictionary y de un IOrderedEnumerable
-        public static void printElements(Object elements)
-        {
-            if (elements is Dictionary<string, int>)
-            {
-                foreach (var element in (Dictionary<string, int>)elements)
-                {
-                    Console.WriteLine($"{element.Key}, {element.Value}");
-                }
-            }
-            else if (elements is IOrderedEnumerable<KeyValuePair<string, int>>)
-            {
-                foreach (var element in (IOrderedEnumerable<KeyValuePair<string, int>>)elements)
-                {
-                    Console.WriteLine($"{element.Key}, {element.Value}");
-                }
-            }
-            else {
-                Console.WriteLine("Tipo de dato no soportado");
-            }
-        }
-
-        // Ordena el diccionario retornando tipo Enumerable
-        public static IOrderedEnumerable<KeyValuePair<string, int>> sortDictionary(Dictionary<string, int> dic)
-        {
-            return dic.OrderByDescending(x => x.Value);
-        }
-
         // Busca los topics por pagina, agregando los valores al diccionario cuando sean menores a la fecha
         private static int getTopicByPage(Dictionary<string, int> topicsDic, string langAlias, int pageNum, int maxDays, bool ignoreMainTopic)
         {
-            HtmlAgilityPack.HtmlWeb web = new HtmlAgilityPack.HtmlWeb();
-            HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
-            IEnumerable<HtmlAgilityPack.HtmlNode> nodes;
-            
-            // Se accede a la pagina de topics y se crea un vector de elementos con la clase my-4
-            try
-            {
-                doc = web.Load($"https://github.com/topics/{langAlias}?o=desc&s=updated&page={pageNum}");
-                nodes = doc.DocumentNode.Descendants().Where(item => item.HasClass("my-4"));
-            }
-            catch (System.Net.WebException err)
-            {
-                Console.WriteLine(err.Message);
-                return -1;
-            }
+            // Se busca el elemento dentro de la pagina segun la clase especificada segun el numero de pagina introducido
+            var generatedNode = Utilities.getElementsByClass(langAlias, pageNum);
+
+            // En caso de un error devuelve un entero, caso positivo devuelve una coleccion de nodos
+            if (generatedNode is int) return -1;
+
+            IEnumerable<HtmlAgilityPack.HtmlNode> nodes = (IEnumerable<HtmlAgilityPack.HtmlNode>)generatedNode;
 
             // Recorre cada nodo que contiene el div con la fecha y los topics
             foreach (var node in nodes)
