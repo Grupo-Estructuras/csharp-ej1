@@ -397,6 +397,7 @@ FodyWeavers.xsd
 
 # Ignore Resultados.txt
 data/Resultados.txt
+data/Resultados2.txt
 
 # Ignore bin
 bin/
@@ -404,3 +405,4 @@ obj/
 
 # Ignore bar graph
 bar_graph.png
+bar_graph2.png
