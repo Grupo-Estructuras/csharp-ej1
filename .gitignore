@@ -401,3 +401,6 @@ data/Resultados.txt
 # Ignore bin
 bin/
 obj/
+
+# Ignore bar graph
+bar_graph.png

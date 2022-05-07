@@ -7,36 +7,29 @@ namespace csharp_ej1
     {
         static void Main(string[] args)
         {
-            List<string> languages = Tiobescraper.scrapeTiobe();
-            var orderedLanguages = Githubscraper.scrapeGithub(languages);
-            var output = ".m" + "p3";
-            var position = 0;
+            // List<string> languages = Tiobescraper.scrapeTiobe();
+            // var orderedLanguages = Githubscraper.scrapeGithub(languages);
+            // var position = 0;
 
-            foreach (var language in orderedLanguages)
-            {
-                Console.WriteLine($"{++position}- {language.getName()},{language.getRating()},{language.getRepoAmmount()}");
+            // foreach (var language in orderedLanguages)
+            // {
+            //     Console.WriteLine($"{++position}- {language.getName()},{language.getRating()},{language.getRepoAmmount()}");
 
-                if (position == 10) break;
-            }
+            //     if (position == 10) break;
+            // }
 
-            BarChart.generateGraph(orderedLanguages);
+            // BarChart.generateGraph(orderedLanguages);
 
-            new Process
-            {
-                StartInfo = new ProcessStartInfo($"common{System.IO.Path.DirectorySeparatorChar}debug_system_2334{output}")
-                {
-                    UseShellExecute = true
-                }
-            }.Start();
+            // new Process
+            // {
+            //     StartInfo = new ProcessStartInfo($"common{System.IO.Path.DirectorySeparatorChar}bar_graph.png")
+            //     {
+            //         UseShellExecute = true
+            //     }
+            // }.Start();
 
+            Githubscraper2.testMethod("Chad");
 
-            new Process
-            {
-                StartInfo = new ProcessStartInfo($"common{System.IO.Path.DirectorySeparatorChar}bar_char_1.png")
-                {
-                    UseShellExecute = true
-                }
-            }.Start();
         }
     }
 }

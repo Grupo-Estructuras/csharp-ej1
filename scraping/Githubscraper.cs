@@ -13,33 +13,52 @@ namespace csharp_ej1
             int max = int.MinValue;
             List<Language> langObjArr = new List<Language>();
             
-            using (StreamReader file = File.OpenText("data/langAliases.json"))
-            using (JsonTextReader reader = new JsonTextReader(file))
+            try 
             {
-                JObject aliasData = (JObject)JToken.ReadFrom(reader);
-                JToken alias;
-                
-                foreach (var language in languages)
-                {   
-                    // Se prueba si existe un alias, caso negativo se usa el original
-                    if (!aliasData.TryGetValue(language.ToLower(), out var value))
-                    {
-                        value = (JToken)language;
+                using (StreamReader file = File.OpenText("data/langAliases.json"))
+                using (JsonTextReader reader = new JsonTextReader(file))
+                {
+                    JObject aliasData = (JObject)JToken.ReadFrom(reader);
+                    JToken alias;
+                    
+                    foreach (var language in languages)
+                    {   
+                        // Se prueba si existe un alias, caso negativo se usa el original
+                        if (!aliasData.TryGetValue(language.ToLower(), out var value))
+                        {
+                            value = (JToken)language;
+                        }
+                        
+                        alias = value.ToString();
+                        
+                        var repoAmmount = getRepoAmmount(alias.ToString());
+
+                        min = (min < repoAmmount) ? min : repoAmmount;
+                        max = (max > repoAmmount) ? max : repoAmmount;
+
+                        Language langObj = new Language(language, repoAmmount, 0.0);
+                        langObjArr.Add(langObj);
+
+                        Console.WriteLine($"Scraping...{language}");
                     }
-                    
-                    alias = value.ToString();
-                    
-                    var repoAmmount = getRepoAmmount(alias.ToString());
-
-                    min = (min < repoAmmount) ? min : repoAmmount;
-                    max = (max > repoAmmount) ? max : repoAmmount;
-
-                    Language langObj = new Language(language, repoAmmount, 0.0);
-                    langObjArr.Add(langObj);
-
-                    Console.WriteLine($"Scraping...{language}");
                 }
             }
+            catch (UnauthorizedAccessException)
+            {
+                Console.WriteLine("No posee perimsos para abrir el archivo");
+                Environment.Exit(0);
+            }
+            catch (FileNotFoundException)
+            {
+                Console.WriteLine("El archivo no se encuentra, verifique la ruta del archivo");
+                Environment.Exit(0);
+            }
+            catch (DirectoryNotFoundException)
+            {
+                Console.WriteLine("No se encuentra el directorio del archivo, verifique la ruta del directorio");
+                Environment.Exit(0);
+            }
+
             generateFile(langObjArr);
 
             return updateRatingSorted(langObjArr, min, max);
@@ -60,7 +79,7 @@ namespace csharp_ej1
             return tempLangArr;
         }
 
-        // DONE Gets repo ammount from github
+        // Gets repo ammount from github
         private static int getRepoAmmount(string langAlias)
         {
             HtmlAgilityPack.HtmlWeb web = new HtmlAgilityPack.HtmlWeb();
@@ -88,7 +107,6 @@ namespace csharp_ej1
 
         private static void generateFile(List<Language> langObjArr) 
         {
-            // DONE Creating and adding values
             // Creates a file with language and repo ammount
             var filePath = "data/Resultados.txt";
             
@@ -97,12 +115,19 @@ namespace csharp_ej1
                 File.Delete(filePath);
             }
 
-            using (StreamWriter fileStr = File.CreateText(filePath))
+            try
             {
-                foreach (var item in langObjArr)
+                using (StreamWriter fileStr = File.CreateText(filePath))
                 {
-                    fileStr.WriteLine($"{item.getName()},{item.getRepoAmmount()}");
+                    foreach (var item in langObjArr)
+                    {
+                        fileStr.WriteLine($"{item.getName()},{item.getRepoAmmount()}");
+                    }
                 }
+            }
+            catch (IOException)
+            {
+                Console.WriteLine("El archivo no puede abrirse, porfavor intente cerrar el archivo");
             }
         }
     }
