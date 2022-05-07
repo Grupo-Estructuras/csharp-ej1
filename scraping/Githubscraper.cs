@@ -59,7 +59,7 @@ namespace csharp_ej1
                 Environment.Exit(0);
             }
 
-            generateFile(langObjArr);
+            generateFile(langObjArr, "Resultados.txt");
 
             return updateRatingSorted(langObjArr, min, max);
         }
@@ -105,10 +105,11 @@ namespace csharp_ej1
             return Int32.Parse(repoAmmount);
         }
 
-        private static void generateFile(List<Language> langObjArr) 
+        // Genera un archivo con el array de los tipos de datos soportados
+        public static void generateFile(Object ObjArr, string fileName) 
         {
             // Creates a file with language and repo ammount
-            var filePath = "data/Resultados.txt";
+            var filePath = $"data/{fileName}";
             
             if (File.Exists(filePath))
             {
@@ -119,9 +120,30 @@ namespace csharp_ej1
             {
                 using (StreamWriter fileStr = File.CreateText(filePath))
                 {
-                    foreach (var item in langObjArr)
+                    if (ObjArr is List<Language>)
                     {
-                        fileStr.WriteLine($"{item.getName()},{item.getRepoAmmount()}");
+                        foreach (var item in (List<Language>)ObjArr)
+                        {
+                            fileStr.WriteLine($"{item.getName()},{item.getRepoAmmount()}");
+                        }
+                    }
+                    else if (ObjArr is IOrderedEnumerable<KeyValuePair<string, int>>)
+                    {
+                        foreach (var item in (IOrderedEnumerable<KeyValuePair<string, int>>)ObjArr)
+                        {
+                            fileStr.WriteLine($"{item.Key},{item.Value}");
+                        }
+                    }
+                    else if (ObjArr is Dictionary<string, int>)
+                    {
+                        foreach (var item in (Dictionary<string, int>)ObjArr)
+                        {
+                            fileStr.WriteLine($"{item.Key},{item.Value}");
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Tipo de dato no soportado");
                     }
                 }
             }
