@@ -12,7 +12,7 @@ namespace csharp_ej1
             // Configuracion basica (no tengo garra para hacer un archivo)
             int maxPage = 30;
             int maxDays = 30;
-            bool ignoreMainTopic = true;
+            bool ignoreMainTopic = false;
 
             // Se recorren las paginas y se actua dependiendo del codigo enviado
             for (int currPage = 1; currPage <= maxPage; currPage++)
@@ -82,7 +82,7 @@ namespace csharp_ej1
                         {
                             var cleanTopic = Regex.Match(strTopic, "[^ ]*$").Value;
 
-                            // Se ignora el topic con el nombre principal
+                            // Se ignora el topic con el nombre principal (opcional)
                             if (ignoreMainTopic && cleanTopic == langAlias) continue;
 
                             // Se agrega el topic al diccionario sumando las entradas e ignorando el nombre topic

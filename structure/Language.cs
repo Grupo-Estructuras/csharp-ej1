@@ -3,10 +3,10 @@ namespace csharp_ej1
     class Language
     {
         private string name;
-        private int repoAmmount;
+        private long repoAmmount;
         private double rating;
 
-        public Language(string name, int repoAmmount, double rating)
+        public Language(string name, long repoAmmount, double rating)
         {
             this.name = name;
             this.repoAmmount = repoAmmount;
@@ -18,7 +18,7 @@ namespace csharp_ej1
             return this.name;
         }
 
-        public int getRepoAmmount()
+        public long getRepoAmmount()
         {
             return this.repoAmmount;
         } 
