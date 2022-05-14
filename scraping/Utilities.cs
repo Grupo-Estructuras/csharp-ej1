@@ -9,7 +9,7 @@ namespace csharp_ej1
             HtmlAgilityPack.HtmlWeb web = new HtmlAgilityPack.HtmlWeb();
             HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
             IEnumerable<HtmlAgilityPack.HtmlNode> nodes;
-
+            
             try
             {
                 // Si no se coloca ningun parametro, se usa para scraping de Tiobe Top 20
@@ -22,7 +22,7 @@ namespace csharp_ej1
                 else if (!String.IsNullOrEmpty(langAlias) && pageNum == 0)
                 {
                     doc = web.Load($"https://github.com/topics/{langAlias}");
-                    nodes = doc.DocumentNode.Descendants().Where(item => item.HasClass("h3"));
+                    nodes = doc.DocumentNode.Descendants().Where(item => item.HasClass("h3")).Where(item => item.HasClass("color-fg-muted"));
                 }
                 // Si se coloca un alias y el numero de pagina es mayor a 0 se usa para extraer la fecha y topics
                 else if (!String.IsNullOrEmpty(langAlias) && pageNum > 0)
