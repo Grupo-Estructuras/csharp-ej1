@@ -11,8 +11,8 @@ namespace csharp_ej1
         public static List<Language> scrapeGithub(List<string> languages)
         {       
             List<Language> langObjArr = new List<Language>();
-            int min = int.MaxValue;
-            int max = int.MinValue;
+            long min = long.MaxValue;
+            long max = long.MinValue;
             
             try 
             {
@@ -34,7 +34,29 @@ namespace csharp_ej1
                         alias = value.ToString();
                         
                         // Busca la cantidad de repositorios del lenguaje con el alias
-                        var repoAmmount = getRepoAmmount(alias.ToString());
+                        long repoAmmount = (long)0;
+                        var maxTry = 3;
+                        
+                        try
+                        {
+                            repoAmmount = getRepoAmmount(alias.ToString());
+                        }
+                        catch (System.Exception)
+                        {
+                            if (maxTry-- > 0)
+                            {
+                                Console.WriteLine("Sleeping");
+                                Thread.Sleep(3000);
+                                Console.WriteLine("Woke up");
+                                repoAmmount = getRepoAmmount(alias.ToString());
+                            }
+                            else
+                            {
+                                Console.WriteLine("Cantidad maxima de intentos, cerrando...");
+                                throw;
+                            }
+                        }
+                        
 
                         // Se buscan los valores minimos y maximos de repositorios
                         min = (min < repoAmmount) ? min : repoAmmount;
@@ -68,7 +90,7 @@ namespace csharp_ej1
         }
 
         // Agrega el rating a cada lenguaje y retorna la lista de lenguajes ordenada por cantidad de repositorios
-        private static List<Language> updateRatingSorted(List<Language> langObjArr, int min, int max)
+        private static List<Language> updateRatingSorted(List<Language> langObjArr, long min, long max)
         {
             List<Language> tempLangArr = new List<Language>();
 
@@ -86,7 +108,7 @@ namespace csharp_ej1
         }
 
         // Retorna la cantidad de repositorios que posee un lenguaje
-        private static int getRepoAmmount(string langAlias)
+        private static long getRepoAmmount(string langAlias)
         {
             // Se busca el elemento dentro de la pagina segun la clase especificada
             var generatedNode = Utilities.getElementsByClass(langAlias);
@@ -102,7 +124,7 @@ namespace csharp_ej1
             repoAmmount = repoAmmount.Replace(",", "");
 
             // Retorna la cantidad convertida en entero
-            return Int32.Parse(repoAmmount);
+            return Int64.Parse(repoAmmount);
         }
     }
 }
