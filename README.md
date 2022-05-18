@@ -6,7 +6,7 @@
 ## Instalaciones Previas
 - Primeramente se debe instalar el framework de Dotnet para poder ejecutar el proyecto de C#, que se puede descargar desde la página ```https://dotnet.microsoft.com/en-us/download``` teniendo en cuenta el sistema operativo
 - Dentro del directorio raíz instalamos las librerias con los siguientes comandos
-  - ```dotnet add package ScottPlot --version 4.1.45```
+  - ```dotnet add package ScottPlot --version 4.1.43```
   - ```dotnet add package Newtonsoft.Json --version 13.0.1```
   - ```dotnet add package HtmlAgilityPack --version 1.11.42```
 
