@@ -114,6 +114,13 @@ namespace csharp_ej1
                     Console.WriteLine($"{element.Key}, {element.Value}");
                 }
             }
+            if (elements is List<Language>)
+            {
+                foreach (var element in (List<Language>)elements)
+                {
+                    Console.WriteLine($"{element.getName()}, {element.getRating()}, {element.getRepoAmmount()}");
+                }
+            }
             else
             {
                 Console.WriteLine("Tipo de dato no soportado");

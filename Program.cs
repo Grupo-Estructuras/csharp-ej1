@@ -15,7 +15,8 @@ namespace csharp_ej1
             var orderedLanguages = Githubscraper.scrapeGithub(languages);
             Utilities.generateFile(orderedLanguages, "Resultados.txt");
             BarChart.generateGraph(orderedLanguages, 10, "bar_graph.png");
-
+            Utilities.printElements(orderedLanguages);
+            
             // Abre grafico parte 1
             new Process
             {
@@ -27,7 +28,7 @@ namespace csharp_ej1
 
             // Parte 2
             // Scraping de Github para la cantidad de topics relacionados
-            var dic = Githubscraper2.getTopics("chad");
+            var dic = Githubscraper2.getTopics("sort");
             var sortedDic = Utilities.sortDictionary(dic);
             Utilities.generateFile(sortedDic, "Resultados2.txt");
             BarChart.generateGraph(sortedDic, 20, "bar_graph2.png");
