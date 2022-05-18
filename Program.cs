@@ -32,6 +32,7 @@ namespace csharp_ej1
             var sortedDic = Utilities.sortDictionary(dic);
             Utilities.generateFile(sortedDic, "Resultados2.txt");
             BarChart.generateGraph(sortedDic, 20, "bar_graph2.png");
+            Utilities.printElements(sortedDic);
 
             // Abre grafico parte 2
             new Process
