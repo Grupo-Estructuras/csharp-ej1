@@ -114,7 +114,7 @@ namespace csharp_ej1
                     Console.WriteLine($"{element.Key}, {element.Value}");
                 }
             }
-            if (elements is List<Language>)
+            else if (elements is List<Language>)
             {
                 foreach (var element in (List<Language>)elements)
                 {
